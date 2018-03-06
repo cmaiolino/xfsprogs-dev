@@ -102,11 +102,10 @@ enum xfs_buf_flags_t {	/* b_flags bits */
 #define XFS_BUF_SIZE(bp)		((bp)->b_bcount)
 #define XFS_BUF_SET_PTR(bp,p,cnt)	({	\
 	(bp)->b_addr = (char *)(p);		\
-	XFS_BUF_SET_COUNT(bp,cnt);		\
+	(bp)->b_bcount = (cnt);			\
 })
 
 #define XFS_BUF_SET_ADDR(bp,blk)	((bp)->b_bn = (blk))
-#define XFS_BUF_SET_COUNT(bp,cnt)	((bp)->b_bcount = (cnt))
 
 #define XFS_BUF_SET_PRIORITY(bp,pri)	cache_node_set_priority( \
 						libxfs_bcache, \
