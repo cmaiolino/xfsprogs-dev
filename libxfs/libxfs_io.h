@@ -100,7 +100,6 @@ enum xfs_buf_flags_t {	/* b_flags bits */
 #define xfs_buf_offset(bp, offset)	((bp)->b_addr + (offset))
 #define XFS_BUF_ADDR(bp)		((bp)->b_bn)
 #define XFS_BUF_SIZE(bp)		((bp)->b_bcount)
-#define XFS_BUF_COUNT(bp)		((bp)->b_bcount)
 #define XFS_BUF_SET_PTR(bp,p,cnt)	({	\
 	(bp)->b_addr = (char *)(p);		\
 	XFS_BUF_SET_COUNT(bp,cnt);		\
