@@ -143,7 +143,7 @@ static char *next(
 	struct xfs_buf	*buf = (struct xfs_buf *)private;
 
 	if (buf &&
-	    (XFS_BUF_COUNT(buf) < (int)(ptr - XFS_BUF_PTR(buf)) + offset))
+	    (XFS_BUF_COUNT(buf) < (int)(ptr - (char *)buf->b_addr) + offset))
 		abort();
 
 	return ptr + offset;
@@ -204,7 +204,7 @@ libxfs_log_clear(
 	ptr = dptr;
 	if (btp) {
 		bp = libxfs_getbufr(btp, start, len);
-		ptr = XFS_BUF_PTR(bp);
+		ptr = (char *)bp->b_addr;
 	}
 	libxfs_log_header(ptr, fs_uuid, version, sunit, fmt, lsn, tail_lsn,
 			  next, bp);
@@ -252,7 +252,7 @@ libxfs_log_clear(
 		ptr = dptr;
 		if (btp) {
 			bp = libxfs_getbufr(btp, blk, len);
-			ptr = XFS_BUF_PTR(bp);
+			ptr = (char *)bp->b_addr;
 		}
 		/*
 		 * Note: pass the full buffer length as the sunit to initialize
@@ -1026,7 +1026,7 @@ libxfs_readbufr_map(struct xfs_buftarg *btp, struct xfs_buf *bp, int flags)
 {
 	int	fd;
 	int	error = 0;
-	char	*buf;
+	void	*buf;
 	int	i;
 
 	fd = libxfs_device_to_fd(btp->dev);
@@ -1147,7 +1147,7 @@ libxfs_writebufr(xfs_buf_t *bp)
 				    LIBXFS_BBTOOFF64(bp->b_bn), bp->b_flags);
 	} else {
 		int	i;
-		char	*buf = bp->b_addr;
+		void	*buf = bp->b_addr;
 
 		for (i = 0; i < bp->b_nmaps; i++) {
 			off64_t	offset = LIBXFS_BBTOOFF64(bp->b_maps[i].bm_bn);

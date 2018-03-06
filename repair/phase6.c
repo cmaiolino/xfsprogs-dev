@@ -632,7 +632,7 @@ _("can't access block %" PRIu64 " (fsbno %" PRIu64 ") of realtime bitmap inode %
 			return(1);
 		}
 
-		memmove(XFS_BUF_PTR(bp), bmp, mp->m_sb.sb_blocksize);
+		memmove(bp->b_addr, bmp, mp->m_sb.sb_blocksize);
 
 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
 
@@ -704,7 +704,7 @@ _("can't access block %" PRIu64 " (fsbno %" PRIu64 ") of realtime summary inode 
 			return(1);
 		}
 
-		memmove(XFS_BUF_PTR(bp), smp, mp->m_sb.sb_blocksize);
+		memmove(bp->b_addr, smp, mp->m_sb.sb_blocksize);
 
 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
 
